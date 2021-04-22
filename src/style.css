@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+body, button {
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+}
+
+body {
+    margin: 20px 30px;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 2.2em;
+}
