@@ -12,17 +12,17 @@ const Selector = ({ select }) => {
     const [hasSelected, setHasSelected] = useState(false);
 
     const [health, setHealth] = useState({
-        eye: false,
-        nose: false,
-        throat: false,
-        headache: false,
-        sleepy: false,
+        eye: 0,
+        nose: 0,
+        throat: 0,
+        headache: 0,
+        sleepy: 0,
     });
 
     const toggleHealthType = (id) => {
         setHealth({
             ...health,
-            [id]: !health[id]
+            [id]: (health[id] + 1) % 3
         });
     };
 

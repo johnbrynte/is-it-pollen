@@ -2,17 +2,18 @@ import React from "react";
 import { className } from "../helpers";
 
 import { icons } from "../images/icons";
-// import styles from "./IconButton.module.css";
-require("./IconButton.css");
+
+import styles from "./IconButton.module.scss";
 
 const IconButton = ({ icon, state, click }) => {
     const image = icons[icon];
 
     const buttonClass = className([
-        "IconButton",
+        styles.IconButton,
         {
-            "IconButton_checked": state
-        }
+            1: styles.IconButton_checked_1,
+            2: styles.IconButton_checked_2
+        }[state]
     ]);
 
     return (
