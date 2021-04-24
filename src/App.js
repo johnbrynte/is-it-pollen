@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react"
 import Overview from "./overview/Overview";
-import Selector from "./selector/Selector";
+import DailySelector from "./selector/DailySelector";
+import Settings from "./Settings";
+import Modal from "./UI/Modal/Modal";
+import { ModalProvider } from "./UI/Modal/ModalContext";
 
 const App = () => {
-    const [datapoints, setDatapoints] = useState([]);
-
     const storageString = "indie.johnbrynte.harjagpollenallergi";
+
+    const [datapoints, setDatapoints] = useState([]);
 
     useEffect(() => {
         try {
@@ -44,10 +47,31 @@ const App = () => {
         }]);
     };
 
+    const updateDatapoint = (i, data) => {
+        let newDatapoints = [...datapoints];
+
+        newDatapoints[i] = {
+            ...datapoints[i],
+            health: {
+                ...datapoints[i].health,
+                ...data.health
+            },
+            stats: {
+                ...datapoints[i].stats,
+                ...data.stats
+            }
+        };
+        setDatapoints(newDatapoints);
+    };
+
     return (
         <>
-            <Selector select={select} />
-            <Overview datapoints={datapoints} />
+            <ModalProvider>
+                <DailySelector select={select} />
+                <Overview datapoints={datapoints} updateDatapoint={updateDatapoint} />
+                <Settings setDatapoints={setDatapoints} />
+                <Modal />
+            </ModalProvider>
         </>
     )
 };

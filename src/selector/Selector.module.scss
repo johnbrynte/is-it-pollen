@@ -1,0 +1,26 @@
+.row {
+    display: flex;
+
+    &_compact {
+        margin: 8px 0;
+    }
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__text {
+        font-size: 0.9em;
+        width: 100px;
+        text-align: center;
+        white-space: pre-wrap;
+        padding: 8px;
+
+        .row_compact & {
+            font-size: 0.7em;
+            width: 60px;
+        }
+    }
+}

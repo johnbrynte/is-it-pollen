@@ -1,10 +1,15 @@
 import React from "react";
 import { className } from "../helpers";
 
-require("./Button.css");
+import styles from "./Button.module.scss";
 
-const Button = ({ children, click }) => {
-    const buttonClass = className(["Button"]);
+const Button = ({ children, click, compact }) => {
+    const buttonClass = className([
+        styles.button,
+        {
+            [styles.button_compact]: compact
+        }
+    ]);
 
     return (
         <button className={buttonClass} onClick={click}>{children}</button>

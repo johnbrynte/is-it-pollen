@@ -1,13 +1,13 @@
 import React from "react";
 import DataPoint from "./DataPoint";
 
-require("./Overview.css");
+import styles from "./Overview.module.css";
 
-const Overview = ({ datapoints }) => {
+const Overview = ({ datapoints, updateDatapoint }) => {
     const sensitive = [(<b>Björk</b>), (<b>Vide</b>)];
 
     return (
-        <>
+        <div className={styles.container}>
             <h2>Dina tidigare datapunkter</h2>
             {!datapoints || !datapoints.length ?
                 (
@@ -20,15 +20,15 @@ const Overview = ({ datapoints }) => {
                                 <span key={i}>{e}</span>
                             ))
                         }.</p>
-                        <div className="Overview_datapoints">
+                        <div className={styles.datapoints}>
                             {datapoints.map((data, i) => (
-                                <DataPoint data={data} key={i} />
+                                <DataPoint data={data} key={i} update={(newData) => updateDatapoint(i, newData)} />
                             ))}
                         </div>
                     </>
                 )
             }
-        </>
+        </div>
     )
 };
 

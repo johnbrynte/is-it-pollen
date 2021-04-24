@@ -1,0 +1,13 @@
+.link {
+    outline: none;
+    border: none;
+    background: none;
+    color: blueviolet;
+    text-decoration: underline;
+    padding: 0;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.6;
+    }
+}

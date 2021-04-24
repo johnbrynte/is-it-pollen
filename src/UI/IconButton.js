@@ -5,11 +5,14 @@ import { icons } from "../images/icons";
 
 import styles from "./IconButton.module.scss";
 
-const IconButton = ({ icon, state, click }) => {
+const IconButton = ({ icon, state, click, compact }) => {
     const image = icons[icon];
 
     const buttonClass = className([
         styles.IconButton,
+        {
+            [styles.IconButton_compact]: compact
+        },
         {
             1: styles.IconButton_checked_1,
             2: styles.IconButton_checked_2

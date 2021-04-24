@@ -14,6 +14,13 @@ const objectToList = (obj, keyId = "key") => {
     });
 };
 
+const listToObject = (list, keyId) => {
+    let obj = {};
+    list.forEach((e, i) => {
+        obj[e[keyId]] = e;
+    });
+};
+
 const className = (o) => {
     if (!(o instanceof Array)) {
         o = [o];
@@ -28,5 +35,6 @@ const className = (o) => {
 
 export {
     objectToList,
+    listToObject,
     className
 };

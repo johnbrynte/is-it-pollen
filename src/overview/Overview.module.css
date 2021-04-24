@@ -1,0 +1,8 @@
+.container {
+    margin-bottom: 100px;
+}
+
+.datapoints {
+    display: flex;
+    flex-flow: wrap;
+}

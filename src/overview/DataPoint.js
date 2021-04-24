@@ -1,18 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { className, objectToList } from "../helpers";
+import ModalContext from "../UI/Modal/ModalContext";
 import DataPopover from "./DataPopover";
+import DataModal from "./DataModal";
 
 require("./DataPoint.css");
 
-const DataPoint = ({ data }) => {
+const DataPoint = ({ data, update }) => {
     const date = data.stats.date.split(/[-T\s]/g)[2];
     const dDate = new Date(Date.parse(data.stats.date));
     const dToday = new Date();
     const isToday = dDate.getFullYear() === dToday.getFullYear() && dDate.getMonth() === dToday.getMonth() && dDate.getDate() === dToday.getDate();
 
-    const level = objectToList(data.health).reduce((prev, cur) => {
-        return (typeof prev === "number" ? prev : prev.value) + (cur.value ? 1 : 0);
-    });
+    const level = Math.floor(objectToList(data.health).reduce((prev, cur) => {
+        return (typeof prev === "number" ? prev : prev.value) + (cur.value);
+    }) / 2);
 
     const buttonClass = className([
         "DataPoint",
@@ -21,6 +23,12 @@ const DataPoint = ({ data }) => {
             "DataPoint_today": isToday
         }
     ]);
+
+    const click = () => {
+        modalContext.show(<DataModal data={data} save={update} />);
+    }
+
+    const modalContext = useContext(ModalContext);
 
     const [popover, setPopover] = useState({
         visible: false,
@@ -74,6 +82,7 @@ const DataPoint = ({ data }) => {
 
     return (
         <button className={buttonClass}
+            onClick={click}
             onMouseEnter={mouseEnter}
             onMouseLeave={mouseLeave}
             onMouseMove={mouseMove}

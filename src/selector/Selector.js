@@ -1,24 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { objectToList } from "../helpers";
+import { className, objectToList } from "../helpers";
 import { icons } from '../images/icons';
-import Button from '../UI/Button';
 
 import IconButton from '../UI/IconButton';
 
-require("./Selector.css");
+import styles from "./Selector.module.scss";
 
-const Selector = ({ select }) => {
-    const [hasSelected, setHasSelected] = useState(false);
-
-    const [health, setHealth] = useState({
-        eye: 0,
-        nose: 0,
-        throat: 0,
-        headache: 0,
-        sleepy: 0,
-    });
-
+const Selector = ({ health, setHealth, compact }) => {
+    const rowStyle = className([
+        styles.row,
+        {
+            [styles.row_compact]: compact
+        }
+    ])
     const toggleHealthType = (id) => {
         setHealth({
             ...health,
@@ -26,36 +21,21 @@ const Selector = ({ select }) => {
         });
     };
 
-    const addDatapoint = () => {
-        setHasSelected(true);
-
-        select(health);
-    };
-
     const healthList = objectToList(health);
 
     return (
-        <div className="Selector">
-            <h2 className="Selector__h2">Vilka besvär har du idag?</h2>
-            {hasSelected ? <p>Toppen! Glöm inte att fylla i imorgon.</p> :
-                (
-                    <>
-                        <div className="Selector__row">
-                            {healthList.map(type => (
-                                <div className="Selector__item" key={type.key}>
-                                    <IconButton
-                                        state={type.value}
-                                        click={() => toggleHealthType(type.key)}
-                                        icon={type.key}>
-                                    </IconButton>
-                                    <span className="Selector__item-text">{icons[type.key].name}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <Button click={addDatapoint}>Lägg till datapunkt</Button>
-                    </>
-                )
-            }
+        <div className={rowStyle}>
+            {healthList.map(type => (
+                <div className={styles.item} key={type.key}>
+                    <IconButton
+                        state={type.value}
+                        click={() => toggleHealthType(type.key)}
+                        icon={type.key}
+                        compact={compact}>
+                    </IconButton>
+                    <span className={styles.item__text}>{icons[type.key].name}</span>
+                </div>
+            ))}
         </div>
     )
 }
