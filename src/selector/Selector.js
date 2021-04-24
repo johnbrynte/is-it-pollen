@@ -4,9 +4,9 @@ import { objectToList } from "../helpers";
 import { icons } from '../images/icons';
 import Button from '../UI/Button';
 
-require("./Selector.css");
-
 import IconButton from '../UI/IconButton';
+
+require("./Selector.css");
 
 const Selector = ({ select }) => {
     const [hasSelected, setHasSelected] = useState(false);

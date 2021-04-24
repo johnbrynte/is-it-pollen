@@ -3,36 +3,6 @@ import Overview from "./overview/Overview";
 import Selector from "./selector/Selector";
 
 const App = () => {
-    // temporary test data
-    const statsTmp = {
-        date: (new Date()).toISOString(),
-        pollen: [{
-            "name": "Björk",
-            "value": 3,
-            "valueMax": 7
-        },
-        {
-            "name": "Sälg/Vide",
-            "value": 2,
-            "valueMax": 7
-        },
-        {
-            "name": "Alm",
-            "value": 2,
-            "valueMax": 7
-        },
-        {
-            "name": "Al",
-            "value": 2,
-            "valueMax": 7
-        },
-        {
-            "name": "Hassel",
-            "value": 1,
-            "valueMax": 7
-        }]
-    };
-
     const [datapoints, setDatapoints] = useState([]);
 
     const storageString = "indie.johnbrynte.harjagpollenallergi";

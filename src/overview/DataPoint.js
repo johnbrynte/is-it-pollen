@@ -5,7 +5,7 @@ import DataPopover from "./DataPopover";
 require("./DataPoint.css");
 
 const DataPoint = ({ data }) => {
-    const date = data.stats.date.split(/[\-T\s]/g)[2];
+    const date = data.stats.date.split(/[-T\s]/g)[2];
     const dDate = new Date(Date.parse(data.stats.date));
     const dToday = new Date();
     const isToday = dDate.getFullYear() === dToday.getFullYear() && dDate.getMonth() === dToday.getMonth() && dDate.getDate() === dToday.getDate();
