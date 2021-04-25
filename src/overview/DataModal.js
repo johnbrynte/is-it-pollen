@@ -25,7 +25,7 @@ const DataModal = ({ data, save }) => {
 
     const DataDatePicker = forwardRef(
         ({ value, onClick }, ref) => (
-            <Button compact click={onClick} ref={ref}>
+            <Button compact click={onClick} forwardRef={ref}>
                 {value}
             </Button>
         ),

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext } from "react";
 import { className, objectToList } from "../helpers";
 import ModalContext from "../UI/Modal/ModalContext";
 import DataPopover from "./DataPopover";

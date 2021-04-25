@@ -1,5 +1,22 @@
 import { objectToList } from "../helpers";
 
+export const dataNames = {
+    al: "Al",
+    ek: "Ek",
+    en: "En",
+    alm: "Alm",
+    gran: "Gran",
+    gras: "Gräs",
+    tall: "Tall",
+    bjork: "Björk",
+    grabo: "Gråbo",
+    hassel: "Hassel",
+    salgvide: "Sälg/Vide",
+    alternaria: "Alternaria",
+    cladosporium: "Cladosporium",
+    malortsambrosia: "Malörtsambrosia",
+};
+
 const calculateData = (d) => {
     if (!d) {
         return null;
@@ -14,14 +31,6 @@ const calculateData = (d) => {
     });
 
     return _d;
-};
-
-export const dataNames = {
-    bjork: "Björk",
-    salgvide: "Sälg/Vide",
-    alm: "Alm",
-    al: "Al",
-    hassel: "Hassel",
 };
 
 export const getStats = (datapoints) => {
@@ -42,14 +51,29 @@ export const getStats = (datapoints) => {
     });
 }
 
-export const getSensitiveStats = (stats) => {
-    if (!stats || !stats.length) {
+export const getAverage = (stats) => {
+    if (!stats) {
         return null;
     }
 
-    const maxValue = objectToList(stats).reduce((prev, next) => Math.max(isNaN(prev) ? prev.value : prev, next.value));
+    const statsList = objectToList(stats);
+
+    const sum = statsList.reduce((prev, next) => (isNaN(prev) ? prev.value : prev) + next.value);
+
+    return sum / statsList.length;
+}
+
+export const getSensitiveStats = (stats) => {
+    if (!stats) {
+        return null;
+    }
+
+    // const maxValue = objectToList(stats).reduce((prev, next) => Math.max(isNaN(prev) ? prev.value : prev, next.value));
+
+    const average = getAverage(stats);
 
     return objectToList(stats)
-        .filter((e) => e.value / maxValue > 0.5)
+        // .filter((e) => e.value / maxValue > 0.5)
+        .filter((e) => e.value > average)
         .map((e) => e.key);
 }
