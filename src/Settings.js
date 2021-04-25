@@ -25,7 +25,7 @@ const Settings = ({ setDatapoints }) => {
     }
 
     return (<div>
-        <LinkButton click={confirmRemoveData}>Rensa data</LinkButton>
+        <LinkButton click={confirmRemoveData}>Rensa data</LinkButton>.
     </div>);
 }
 

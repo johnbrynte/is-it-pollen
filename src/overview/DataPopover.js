@@ -26,7 +26,7 @@ const DataPopover = ({ data }) => {
                 );
             })}
             {!health.length && <p>Inga besvär</p>}
-            <p>{data.stats.date}</p>
+            <p>{data.stats.date.split(" ")[0]}</p>
         </>
     );
 }

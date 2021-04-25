@@ -36,11 +36,11 @@ const DailySelector = ({ select }) => {
 
     return (
         <div className={styles.wrapper}>
-            <h2 className={styles.h2}>Vilka besvär har du idag?</h2>
+            <h2>Vilka besvär har du idag?</h2>
             {hasSelected && (
                 <>
                     <p>Toppen! Glöm inte att fylla i imorgon.</p>
-                    <LinkButton click={reset}>Fyll i igen</LinkButton>
+                    <LinkButton click={reset}>Fyll i igen</LinkButton>.
                 </>
             )}
             {!hasSelected && (

@@ -2,23 +2,37 @@ import React, { useEffect, useState } from "react"
 import Overview from "./overview/Overview";
 import DailySelector from "./selector/DailySelector";
 import Settings from "./Settings";
+import Button from "./UI/Button";
 import Modal from "./UI/Modal/Modal";
 import { ModalProvider } from "./UI/Modal/ModalContext";
 
+import styles from "./App.module.css";
+
 const App = () => {
     const storageString = "indie.johnbrynte.harjagpollenallergi";
+    const cookieString = "indie.johnbrynte.harjagpollenallergi.consent";
 
     const [datapoints, setDatapoints] = useState([]);
+    const [cookieConsent, setCookieConsent] = useState(false);
 
     useEffect(() => {
         try {
-            var data = JSON.parse(window.localStorage.getItem(storageString));
+            const data = JSON.parse(window.localStorage.getItem(storageString));
 
             if (data) {
                 setDatapoints(data);
             }
+
+            const consent = window.localStorage.getItem(cookieString);
+            if (consent) {
+                setCookieConsent(consent === "true");
+            }
         } catch (e) { }
     }, []);
+
+    useEffect(() => {
+        window.localStorage.setItem(cookieString, cookieConsent);
+    }, [cookieConsent]);
 
     useEffect(() => {
         window.localStorage.setItem(storageString, JSON.stringify(datapoints));
@@ -61,6 +75,9 @@ const App = () => {
                 ...data.stats
             }
         };
+
+        newDatapoints.sort((a, b) => a.stats.date > b.stats.date ? 1 : -1);
+
         setDatapoints(newDatapoints);
     };
 
@@ -73,9 +90,25 @@ const App = () => {
     return (
         <>
             <ModalProvider>
+                <h1>Är det pollen?</h1>
+                <p className="paragraph">Genom att fylla i dina symptom varje dag kan vi med hjälp av data från <a href="https://pollenrapporten.se/prognoser/stockholm" rel="noreferrer" target="_blank">pollenrapporten.se</a> (Stockholm) röna ut vilken pollen du är känslig mot.</p>
+                <p><strong>OBS.</strong> Inga garantier, det hela är väldigt hobbyvetenskapligt.</p>
+                {!cookieConsent && (
+                    <div>
+                        <div className={styles.info}>Sidan använder "cookies" för att lagra den data du matar in. <Button compact click={() => setCookieConsent(true)}>OK</Button></div>
+                    </div>
+                )}
+
                 <DailySelector select={select} />
-                <Overview datapoints={datapoints} updateDatapoint={updateDatapoint} removeDatapoint={removeDatapoint} />
-                <Settings setDatapoints={setDatapoints} />
+                {datapoints && !!datapoints.length && (
+                    <Overview datapoints={datapoints} updateDatapoint={updateDatapoint} removeDatapoint={removeDatapoint} />
+                )}
+
+                <div className={styles.footer}>
+                    <p>Alla ikoner kommer från <a href="https://streamlineicons.com/" rel="noreferrer" target="_blank">Streamline</a>.</p>
+                    <Settings setDatapoints={setDatapoints} />
+                </div>
+
                 <Modal />
             </ModalProvider>
         </>

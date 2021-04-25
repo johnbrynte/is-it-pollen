@@ -1,16 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { objectToList } from "../helpers";
 import { dataNames, getAverage, getSensitiveStats } from "./statistics";
 
 const StatsGraph = ({ stats }) => {
-    const points = stats && objectToList(stats);
 
-    const namesList = objectToList(dataNames);
+    const canvasRef = useRef();
 
-    const render = (ctx) => {
+    const [canvas, setCanvas] = useState(null);
+
+    const render = useCallback(() => {
+        if (!canvas) {
+            return;
+        }
+        const ctx = canvas.getContext("2d");
+
         if (!stats) {
             return;
         }
+
+        const points = objectToList(stats);
+
+        const namesList = objectToList(dataNames);
+
         const ratio = 3 / 2;
         const width = 440;
         const height = width / ratio;
@@ -77,21 +88,13 @@ const StatsGraph = ({ stats }) => {
         ctx.moveTo(0, yBottom);
         ctx.lineTo(width, yBottom);
         ctx.stroke();
-    };
-
-    const canvasRef = useRef();
-
-    const [canvas, setCanvas] = useState(null);
+    }, [canvas, stats]);
 
     useEffect(() => {
         setCanvas(canvasRef.current);
     }, []);
 
-    useEffect(() => {
-        if (canvas) {
-            render(canvas.getContext("2d"));
-        }
-    }, [canvas]);
+    render();
 
     return (
         <canvas ref={canvasRef}></canvas>

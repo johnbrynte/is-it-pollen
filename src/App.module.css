@@ -1,0 +1,10 @@
+.info {
+    display: inline-block;
+    border-radius: 6px;
+    border: 1px solid purple;
+    padding: 8px;
+}
+
+.footer {
+    margin-top: 100px;
+}

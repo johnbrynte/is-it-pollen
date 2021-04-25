@@ -1,5 +1,4 @@
 import React from "react";
-import { objectToList } from "../helpers";
 import { createPopover } from "../UI/Popover/Popover";
 import DataPoint from "./DataPoint";
 
@@ -15,7 +14,7 @@ const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
     const Popover = createPopover();
 
     return (
-        <div className={styles.container}>
+        <>
             <h2>Dina tidigare datapunkter</h2>
             {!datapoints || !datapoints.length ?
                 (
@@ -28,11 +27,11 @@ const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
                                 {!sensitive && (<span>Du verkar inte vara känslig mot något speciellt.</span>)}
                                 {sensitive && (<span>Du verkar vara känslig mot&nbsp;
                                     {
-                                        sensitive.length == 1 ?
+                                        sensitive.length === 1 ?
                                             <b>{dataNames[sensitive[0]]}</b> :
-                                            sensitive.reduce((prev, cur) => [prev, " och ", cur]).map((e, i) => (
+                                            sensitive.map((e, i) => (
                                                 <b key={i}>{dataNames[e]}</b>
-                                            ))
+                                            )).reduce((prev, cur, i, arr) => arr.length > 2 && i < arr.length - 1 ? [prev, ", ", cur] : [prev, " och ", cur])
                                     }
                                 .</span>)}
                                 <Popover.Window>
@@ -50,7 +49,7 @@ const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
                     </>
                 )
             }
-        </div>
+        </>
     )
 };
 
