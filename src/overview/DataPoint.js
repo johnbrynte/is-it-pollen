@@ -7,7 +7,7 @@ import { createPopover } from "../UI/Popover/Popover";
 
 require("./DataPoint.css");
 
-const DataPoint = ({ data, update }) => {
+const DataPoint = ({ data, update, remove }) => {
     const date = data.stats.date.split(/[-T\s]/g)[2];
     const dDate = new Date(Date.parse(data.stats.date));
     const dToday = new Date();
@@ -26,7 +26,7 @@ const DataPoint = ({ data, update }) => {
     ]);
 
     const click = () => {
-        modalContext.show(<DataModal data={data} save={update} />);
+        modalContext.show(<DataModal data={data} save={update} remove={remove} />);
     }
 
     const modalContext = useContext(ModalContext);

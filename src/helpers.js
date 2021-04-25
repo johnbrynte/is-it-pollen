@@ -18,6 +18,7 @@ const listToObject = (list, keyId) => {
     let obj = {};
     list.forEach((e, i) => {
         obj[e[keyId]] = e;
+        delete obj[keyId];
     });
 };
 

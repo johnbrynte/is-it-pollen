@@ -7,7 +7,7 @@ import styles from "./Overview.module.css";
 import { getStats, getSensitiveStats, dataNames } from "./statistics";
 import StatsGraph from "./StatsGraph";
 
-const Overview = ({ datapoints, updateDatapoint }) => {
+const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
     const stats = getStats(datapoints);
 
     const sensitive = getSensitiveStats(stats);
@@ -42,7 +42,9 @@ const Overview = ({ datapoints, updateDatapoint }) => {
                         )}
                         <div className={styles.datapoints}>
                             {datapoints.map((data, i) => (
-                                <DataPoint data={data} key={i} update={(newData) => updateDatapoint(i, newData)} />
+                                <DataPoint data={data} key={i}
+                                    update={(newData) => updateDatapoint(i, newData)}
+                                    remove={() => removeDatapoint(i)} />
                             ))}
                         </div>
                     </>

@@ -64,11 +64,17 @@ const App = () => {
         setDatapoints(newDatapoints);
     };
 
+    const removeDatapoint = (i) => {
+        let newDatapoints = [...datapoints];
+        newDatapoints.splice(i, 1);
+        setDatapoints(newDatapoints);
+    };
+
     return (
         <>
             <ModalProvider>
                 <DailySelector select={select} />
-                <Overview datapoints={datapoints} updateDatapoint={updateDatapoint} />
+                <Overview datapoints={datapoints} updateDatapoint={updateDatapoint} removeDatapoint={removeDatapoint} />
                 <Settings setDatapoints={setDatapoints} />
                 <Modal />
             </ModalProvider>
