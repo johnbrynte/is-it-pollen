@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '../UI/Button';
 import Selector from './Selector';
 
-import styles from "./DailySelector.module.scss";
+import styles from "./DailySelector.module.css";
 import LinkButton from '../UI/LinkButton';
 
 const DailySelector = ({ select }) => {

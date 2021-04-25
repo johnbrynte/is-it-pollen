@@ -1,0 +1,18 @@
+.container {
+    position: relative;
+}
+
+.popover {
+    position: absolute;
+    z-index: 10;
+    background: white;
+    transform: translate(0%,0%);
+    border-radius: 6px;
+    border: 1px solid #ddd;
+
+    text-align: left;
+
+    width: 200px;
+    padding: 16px;
+    font-size: 0.8em;
+}

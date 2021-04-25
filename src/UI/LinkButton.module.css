@@ -6,8 +6,8 @@
     text-decoration: underline;
     padding: 0;
     cursor: pointer;
+}
 
-    &:hover {
-        opacity: 0.6;
-    }
+.link:hover {
+    opacity: 0.6;
 }

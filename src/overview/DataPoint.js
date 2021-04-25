@@ -3,6 +3,7 @@ import { className, objectToList } from "../helpers";
 import ModalContext from "../UI/Modal/ModalContext";
 import DataPopover from "./DataPopover";
 import DataModal from "./DataModal";
+import { createPopover } from "../UI/Popover/Popover";
 
 require("./DataPoint.css");
 
@@ -30,67 +31,17 @@ const DataPoint = ({ data, update }) => {
 
     const modalContext = useContext(ModalContext);
 
-    const [popover, setPopover] = useState({
-        visible: false,
-        pos: null,
-    });
-
-    const buttonRef = useRef();
-
-    const mouseEventToPos = (e) => {
-        return {
-            x: e.clientX,
-            y: e.clientY,
-        };
-    }
-
-    const mouseEnter = (e) => {
-        const pos = mouseEventToPos(e);
-
-        const { offsetTop, offsetLeft } = buttonRef.current;
-
-        setPopover({
-            ...popover,
-            pos: {
-                x: pos.x - offsetLeft,
-                y: pos.y - offsetTop
-            },
-            visible: true
-        });
-    }
-
-    const mouseLeave = (e) => {
-        setPopover({
-            ...popover,
-            visible: false
-        });
-    }
-
-    const mouseMove = (e) => {
-        const pos = mouseEventToPos(e);
-
-        const { offsetTop, offsetLeft } = buttonRef.current;
-
-        setPopover({
-            ...popover,
-            pos: {
-                x: pos.x - offsetLeft,
-                y: pos.y - offsetTop
-            }
-        });
-    }
+    const Popover = createPopover();
 
     return (
-        <button className={buttonClass}
-            onClick={click}
-            onMouseEnter={mouseEnter}
-            onMouseLeave={mouseLeave}
-            onMouseMove={mouseMove}
-            ref={buttonRef}
-        >
+        <Popover.Container custom={(
+            <button className={buttonClass} onClick={click} />
+        )}>
             {date}
-            {popover.visible && <DataPopover pos={popover.pos} data={data} />}
-        </button>
+            <Popover.Window>
+                <DataPopover data={data} />
+            </Popover.Window>
+        </Popover.Container>
     )
 };
 

@@ -5,7 +5,7 @@ import { icons } from '../images/icons';
 
 import IconButton from '../UI/IconButton';
 
-import styles from "./Selector.module.scss";
+import styles from "./Selector.module.css";
 
 const Selector = ({ health, setHealth, compact }) => {
     const rowStyle = className([

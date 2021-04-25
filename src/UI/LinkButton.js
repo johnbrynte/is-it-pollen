@@ -1,4 +1,4 @@
-import styles from "./LinkButton.module.scss";
+import styles from "./LinkButton.module.css";
 
 const LinkButton = ({ children, click }) => {
     return (

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import ModalContext from "./ModalContext";
 
-import styles from "./Modal.module.scss";
+import styles from "./Modal.module.css";
 
 const Modal = () => {
     const { modal, hide } = useContext(ModalContext);

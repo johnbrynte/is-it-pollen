@@ -1,0 +1,25 @@
+.row {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon_severe {
+    background: pink;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px salmon;
+}
+
+.icon img {
+    width: 60%;
+    height: 60%;
+}

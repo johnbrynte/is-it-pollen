@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const ModalContext = React.createContext({
     modal: null,
     show: () => { },
+    hide: () => { }
 });
 
 export const ModalProvider = ({ children }) => {

@@ -3,7 +3,7 @@ import { className } from "../helpers";
 
 import { icons } from "../images/icons";
 
-import styles from "./IconButton.module.scss";
+import styles from "./IconButton.module.css";
 
 const IconButton = ({ icon, state, click, compact }) => {
     const image = icons[icon];

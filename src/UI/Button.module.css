@@ -1,0 +1,22 @@
+.button {
+    font-size: 1.2em;
+    border-radius: 6px;
+    background: aquamarine;
+    color: purple;
+    padding: 16px 16px;
+    border: none;
+    cursor: pointer;
+    margin: 16px 0;
+}
+
+.button:hover {
+    background: purple;
+    color: aquamarine;
+}
+
+.button_compact {
+    font-size: 1em;
+    padding: 8px;
+    margin-top: 0;
+    margin-bottom: 0;
+}

@@ -1,4 +1,4 @@
-import styles from "./ModalFooter.module.scss";
+import styles from "./ModalFooter.module.css";
 
 const ModalFooter = ({ children }) => {
     return (
