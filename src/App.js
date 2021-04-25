@@ -106,6 +106,7 @@ const App = () => {
 
                 <div className={styles.footer}>
                     <p>Alla ikoner kommer från <a href="https://streamlineicons.com/" rel="noreferrer" target="_blank">Streamline</a>.</p>
+                    <p>Se koden på <a href="https://github.com/johnbrynte/is-it-pollen" rel="noreferrer" target="_blank">GitHub</a>.</p>
                     <Settings setDatapoints={setDatapoints} />
                 </div>
 

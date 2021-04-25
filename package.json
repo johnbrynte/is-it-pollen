@@ -1,6 +1,7 @@
 {
   "name": "is-it-pollen",
   "version": "0.1.0",
+  "homepage": "https://johnbrynte.se/projects/ar-det-pollen",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.12.0",
