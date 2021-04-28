@@ -5,6 +5,7 @@ import Selector from './Selector';
 
 import styles from "./DailySelector.module.css";
 import LinkButton from '../UI/LinkButton';
+import WindowContext from '../UI/Window/WindowContext';
 
 const DailySelector = ({ select }) => {
     const [hasSelected, setHasSelected] = useState(false);
@@ -45,8 +46,21 @@ const DailySelector = ({ select }) => {
             )}
             {!hasSelected && (
                 <>
-                    <Selector health={health} setHealth={setHealth}></Selector>
-                    <Button click={addDatapoint}>Lägg till datapunkt</Button>
+                    <WindowContext.Consumer>
+                        {value => {
+                            if (value.desktop) {
+                                return (<>
+                                    <Selector health={health} setHealth={setHealth}></Selector>
+                                    <Button click={addDatapoint}>Lägg till datapunkt</Button>
+                                </>);
+                            } else {
+                                return (<>
+                                    <Selector health={health} setHealth={setHealth} compact></Selector>
+                                    <Button click={addDatapoint} compact>Lägg till datapunkt</Button>
+                                </>);
+                            }
+                        }}
+                    </WindowContext.Consumer>
                 </>
             )
             }

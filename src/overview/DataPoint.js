@@ -4,6 +4,9 @@ import ModalContext from "../UI/Modal/ModalContext";
 import DataPopover from "./DataPopover";
 import DataModal from "./DataModal";
 import { createPopover } from "../UI/Popover/Popover";
+import WindowContext from "../UI/Window/WindowContext";
+import ModalFooter from "../UI/Modal/ModalFooter";
+import Button from "../UI/Button";
 
 require("./DataPoint.css");
 
@@ -25,8 +28,22 @@ const DataPoint = ({ data, update, remove }) => {
         }
     ]);
 
-    const click = () => {
-        modalContext.show(<DataModal data={data} save={update} remove={remove} />);
+    const showDataEditModal = () => {
+        modalContext.show((
+            <DataModal data={data} save={update} remove={remove} />
+        ));
+    }
+
+    const showDataModal = () => {
+        modalContext.show((
+            <>
+                <DataPopover data={data} />
+                <ModalFooter>
+                    <Button compact click={showDataEditModal}>Redigera</Button>
+                    <Button compact click={modalContext.hide}>Stäng</Button>
+                </ModalFooter>
+            </>
+        ));
     }
 
     const modalContext = useContext(ModalContext);
@@ -34,14 +51,26 @@ const DataPoint = ({ data, update, remove }) => {
     const Popover = createPopover();
 
     return (
-        <Popover.Container custom={(
-            <button className={buttonClass} onClick={click} />
-        )}>
-            {date}
-            <Popover.Window>
-                <DataPopover data={data} />
-            </Popover.Window>
-        </Popover.Container>
+        <WindowContext.Consumer>
+            {value => {
+                if (value.desktop) {
+                    return (
+                        <Popover.Container custom={(
+                            <button className={buttonClass} onClick={showDataEditModal} />
+                        )}>
+                            {date}
+                            <Popover.Window>
+                                <DataPopover data={data} />
+                            </Popover.Window>
+                        </Popover.Container>
+                    );
+                } else {
+                    return (
+                        <button className={buttonClass} onClick={showDataModal}>{date}</button>
+                    );
+                }
+            }}
+        </WindowContext.Consumer>
     )
 };
 

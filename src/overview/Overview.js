@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
+import Button from "../UI/Button";
+import ModalContext from "../UI/Modal/ModalContext";
+import ModalFooter from "../UI/Modal/ModalFooter";
 import { createPopover } from "../UI/Popover/Popover";
+import WindowContext from "../UI/Window/WindowContext";
 import DataPoint from "./DataPoint";
 
 import styles from "./Overview.module.css";
-import { getStats, getSensitiveStats, dataNames } from "./statistics";
+import OverviewVerdict from "./OverviewVerdict";
+import { getStats } from "./statistics";
 import StatsGraph from "./StatsGraph";
 
 const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
     const stats = getStats(datapoints);
 
-    const sensitive = getSensitiveStats(stats);
-
     const Popover = createPopover();
+
+    const modalContext = useContext(ModalContext);
+
+    const showVerdictModal = () => {
+        modalContext.show((
+            <>
+                <StatsGraph stats={stats} fillWidth></StatsGraph>
+                <ModalFooter>
+                    <Button compact click={modalContext.hide}>Stäng</Button>
+                </ModalFooter>
+            </>
+        ));
+    };
 
     return (
         <>
@@ -23,21 +39,26 @@ const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
                 (
                     <>
                         {stats && (
-                            <Popover.Container custom={<div className={styles.info} />}>
-                                {!sensitive && (<span>Du verkar inte vara känslig mot något speciellt.</span>)}
-                                {sensitive && (<span>Du verkar vara känslig mot&nbsp;
-                                    {
-                                        sensitive.length === 1 ?
-                                            <b>{dataNames[sensitive[0]]}</b> :
-                                            sensitive.map((e, i) => (
-                                                <b key={i}>{dataNames[e]}</b>
-                                            )).reduce((prev, cur, i, arr) => arr.length > 2 && i < arr.length - 1 ? [prev, ", ", cur] : [prev, " och ", cur])
+                            <WindowContext.Consumer>
+                                { value => {
+                                    if (value.desktop) {
+                                        return (
+                                            <Popover.Container custom={<div className={styles.info} />}>
+                                                <OverviewVerdict stats={stats}></OverviewVerdict>
+                                                <Popover.Window>
+                                                    <StatsGraph stats={stats}></StatsGraph>
+                                                </Popover.Window>
+                                            </Popover.Container>
+                                        );
+                                    } else {
+                                        return (
+                                            <Button compact click={showVerdictModal}>
+                                                <OverviewVerdict stats={stats}></OverviewVerdict>
+                                            </Button>
+                                        );
                                     }
-                                .</span>)}
-                                <Popover.Window>
-                                    <StatsGraph stats={stats}></StatsGraph>
-                                </Popover.Window>
-                            </Popover.Container>
+                                }}
+                            </WindowContext.Consumer>
                         )}
                         <div className={styles.datapoints}>
                             {datapoints.map((data, i) => (

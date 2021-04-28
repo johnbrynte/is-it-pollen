@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { objectToList } from "../helpers";
 import { dataNames, getAverage, getSensitiveStats } from "./statistics";
 
-const StatsGraph = ({ stats }) => {
+const StatsGraph = ({ stats, fillWidth }) => {
 
     const canvasRef = useRef();
 
@@ -94,10 +94,14 @@ const StatsGraph = ({ stats }) => {
         setCanvas(canvasRef.current);
     }, []);
 
+    const canvasStyle = fillWidth && {
+        width: "100%"
+    };
+
     render();
 
     return (
-        <canvas ref={canvasRef}></canvas>
+        <canvas ref={canvasRef} style={canvasStyle}></canvas>
     );
 }
 

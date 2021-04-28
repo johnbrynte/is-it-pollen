@@ -4,11 +4,11 @@ import LinkButton from "./UI/LinkButton";
 import ModalContext from "./UI/Modal/ModalContext";
 import ModalFooter from "./UI/Modal/ModalFooter";
 
-const Settings = ({ setDatapoints }) => {
+const Settings = ({ removeAllDatapoints }) => {
     const modalContext = useContext(ModalContext);
 
     const removeData = () => {
-        setDatapoints([]);
+        removeAllDatapoints();
         modalContext.hide();
     };
 
