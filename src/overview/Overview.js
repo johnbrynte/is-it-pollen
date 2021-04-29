@@ -4,14 +4,18 @@ import ModalContext from "../UI/Modal/ModalContext";
 import ModalFooter from "../UI/Modal/ModalFooter";
 import { createPopover } from "../UI/Popover/Popover";
 import WindowContext from "../UI/Window/WindowContext";
-import DataPoint from "./DataPoint";
+import DataPoint, { CALLBACK_ENUMS } from "./DataPoint";
 
 import styles from "./Overview.module.css";
 import OverviewVerdict from "./OverviewVerdict";
 import { getStats } from "./statistics";
 import StatsGraph from "./StatsGraph";
 
-const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
+const VIEW_CALLBACKS_ENUMS = {
+    ...CALLBACK_ENUMS
+};
+
+const Overview = ({ datapoints, callbackHandler }) => {
     const stats = getStats(datapoints);
 
     const Popover = createPopover();
@@ -61,10 +65,9 @@ const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
                             </WindowContext.Consumer>
                         )}
                         <div className={styles.datapoints}>
-                            {datapoints.map((data, i) => (
-                                <DataPoint data={data} key={i}
-                                    update={(newData) => updateDatapoint(i, newData)}
-                                    remove={() => removeDatapoint(i)} />
+                            {datapoints.map((data) => (
+                                <DataPoint data={data} key={data.id}
+                                    callbackHandler={callbackHandler} />
                             ))}
                         </div>
                     </>
@@ -75,3 +78,6 @@ const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
 };
 
 export default Overview;
+export {
+    VIEW_CALLBACKS_ENUMS as CALLBACK_ENUMS
+};

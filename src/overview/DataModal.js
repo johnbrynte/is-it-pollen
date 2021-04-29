@@ -18,11 +18,14 @@ const DataModal = ({ data, save, remove }) => {
     const toDateFormat = (date) => date.toISOString().replace("T", " ").split(":").slice(0, 2).join(":");
 
     const onSave = () => {
+        const formattedDate = toDateFormat(date);
+
         save({
             health,
+            date: formattedDate.split(" ")[0],
             stats: {
                 ...data.stats,
-                date: toDateFormat(date),
+                date: formattedDate,
                 pollen: [...pollen]
             }
         });

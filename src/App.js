@@ -1,87 +1,52 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useReducer } from "react"
 import Modal from "./UI/Modal/Modal";
 import { ModalProvider } from "./UI/Modal/ModalContext";
 
 import Home from "./Home";
 import { WindowProvider } from "./UI/Window/WindowContext";
 
+import { actionTypes, init, reducer } from "./reducers/reducer";
+import { useActions } from "./actions/App";
+
 const App = () => {
     const storageString = "indie.johnbrynte.harjagpollenallergi";
 
-    const [datapoints, setDatapoints] = useState([]);
+    const [data, dispatch] = useReducer(reducer, null, init);
+
+    const { callbackHandler } = useActions(dispatch);
 
     useEffect(() => {
         try {
             const data = JSON.parse(window.localStorage.getItem(storageString));
 
             if (data) {
-                setDatapoints(data);
+                dispatch({
+                    type: actionTypes.reset,
+                    payload: data
+                });
             }
         } catch (e) { }
     }, []);
 
     useEffect(() => {
-        window.localStorage.setItem(storageString, JSON.stringify(datapoints));
-    }, [datapoints]);
+        window.localStorage.setItem(storageString, JSON.stringify(data));
+    }, [data]);
 
-    const addDatapoint = async (health) => {
-        const response = await fetch("https://www.johnbrynte.se/api/pollen/stockholm/");
+    // get all datapoints sorted by date
+    const datapointsByDate = data.dates.allIds.sort().map((dateId) => (
+        data.dates.byId[dateId].map((dataId) => (
+            data.datapoints.byId[dataId]
+        ))
+    ));
 
-        if (!response.ok) {
-            console.error(response);
-            return;
-        }
-
-        const data = await response.json();
-
-        if (!data.success) {
-            console.error(data.error);
-            return;
-        }
-
-        const stats = data.data;
-
-        setDatapoints([...datapoints, {
-            health: { ...health },
-            stats
-        }]);
-    };
-
-    const updateDatapoint = (i, data) => {
-        let newDatapoints = [...datapoints];
-
-        newDatapoints[i] = {
-            ...datapoints[i],
-            health: {
-                ...datapoints[i].health,
-                ...data.health
-            },
-            stats: {
-                ...datapoints[i].stats,
-                ...data.stats
-            }
-        };
-
-        newDatapoints.sort((a, b) => a.stats.date > b.stats.date ? 1 : -1);
-
-        setDatapoints(newDatapoints);
-    };
-
-    const removeDatapoint = (i) => {
-        let newDatapoints = [...datapoints];
-        newDatapoints.splice(i, 1);
-        setDatapoints(newDatapoints);
-    };
-
-    const removeAllDatapoints = () => {
-        setDatapoints([]);
-    };
+    // unpack to one list
+    const datapoints = datapointsByDate.length > 1 ? datapointsByDate.reduce((prev, cur) => prev.concat(cur)) : datapointsByDate[0];
 
     return (
         <>
             <WindowProvider>
                 <ModalProvider>
-                    <Home datapoints={datapoints} addDatapoint={addDatapoint} updateDatapoint={updateDatapoint} removeDatapoint={removeDatapoint} removeAllDatapoints={removeAllDatapoints}></Home>
+                    <Home datapoints={datapoints} callbackHandler={callbackHandler}></Home>
 
                     <Modal />
                 </ModalProvider>

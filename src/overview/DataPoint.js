@@ -8,9 +8,14 @@ import WindowContext from "../UI/Window/WindowContext";
 import ModalFooter from "../UI/Modal/ModalFooter";
 import Button from "../UI/Button";
 
+const VIEW_CALLBACKS_ENUMS = {
+    DATAPOINT_UPDATE_DATAPOINT: "DataPoint/updateDatapoint",
+    DATAPOINT_REMOVE_DATAPOINT: "DataPoint/removeDatapoint"
+};
+
 require("./DataPoint.css");
 
-const DataPoint = ({ data, update, remove }) => {
+const DataPoint = ({ data, callbackHandler }) => {
     const date = data.stats.date.split(/[-T\s]/g)[2];
     const dDate = new Date(Date.parse(data.stats.date));
     const dToday = new Date();
@@ -30,7 +35,7 @@ const DataPoint = ({ data, update, remove }) => {
 
     const showDataEditModal = () => {
         modalContext.show((
-            <DataModal data={data} save={update} remove={remove} />
+            <DataModal data={data} save={updateDatapoint} remove={removeDatapoint} />
         ));
     }
 
@@ -44,6 +49,25 @@ const DataPoint = ({ data, update, remove }) => {
                 </ModalFooter>
             </>
         ));
+    }
+
+    const updateDatapoint = (newData) => {
+        callbackHandler(
+            VIEW_CALLBACKS_ENUMS.DATAPOINT_UPDATE_DATAPOINT,
+            {
+                id: data.id,
+                data: newData
+            }
+        );
+    }
+
+    const removeDatapoint = () => {
+        callbackHandler(
+            VIEW_CALLBACKS_ENUMS.DATAPOINT_REMOVE_DATAPOINT,
+            {
+                id: data.id
+            }
+        );
     }
 
     const modalContext = useContext(ModalContext);
@@ -75,3 +99,6 @@ const DataPoint = ({ data, update, remove }) => {
 };
 
 export default DataPoint;
+export {
+    VIEW_CALLBACKS_ENUMS as CALLBACK_ENUMS
+};

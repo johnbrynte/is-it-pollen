@@ -1,11 +1,31 @@
-import Overview from "./overview/Overview";
+import Overview, { CALLBACK_ENUMS } from "./overview/Overview";
 import DailySelector from "./selector/DailySelector";
 import Settings from "./Settings";
 import CookieConsent from "./CookieConsent";
 
 import styles from "./Home.module.css";
 
-const Home = ({ datapoints, addDatapoint, updateDatapoint, removeDatapoint, removeAllDatapoints }) => {
+const VIEW_CALLBACKS_ENUMS = {
+    ...CALLBACK_ENUMS,
+    HOME_ADD_DATAPOINT: "Home/addDatapoint",
+    HOME_REMOVE_ALL_DATAPOINTS: "Home/removeAllDatapoints"
+}
+
+const Home = ({ datapoints, callbackHandler }) => {
+
+    const addDatapoint = (health) => {
+        callbackHandler(
+            VIEW_CALLBACKS_ENUMS.HOME_ADD_DATAPOINT,
+            { health }
+        );
+    }
+
+    const removeAllDatapoints = () => {
+        callbackHandler(
+            VIEW_CALLBACKS_ENUMS.HOME_REMOVE_ALL_DATAPOINTS
+        )
+    }
+
     return (
         <>
             <h1>Är det pollen?</h1>
@@ -17,7 +37,7 @@ const Home = ({ datapoints, addDatapoint, updateDatapoint, removeDatapoint, remo
             <DailySelector select={addDatapoint} />
 
             {datapoints && !!datapoints.length && (
-                <Overview datapoints={datapoints} updateDatapoint={updateDatapoint} removeDatapoint={removeDatapoint} />
+                <Overview datapoints={datapoints} callbackHandler={callbackHandler} />
             )}
 
             <div className={styles.footer}>
@@ -30,3 +50,6 @@ const Home = ({ datapoints, addDatapoint, updateDatapoint, removeDatapoint, remo
 };
 
 export default Home;
+export {
+    VIEW_CALLBACKS_ENUMS as CALLBACK_ENUMS
+};
