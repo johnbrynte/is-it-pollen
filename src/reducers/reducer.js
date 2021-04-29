@@ -5,6 +5,19 @@ export const actionTypes = {
     reset: "RESET"
 };
 
+export const init = (data) => {
+    return data || {
+        datapoints: {
+            byId: {},
+            allIds: []
+        },
+        dates: {
+            byId: {},
+            allIds: []
+        }
+    };
+};
+
 export const reducer = (state, action) => {
     switch (action.type) {
         case actionTypes.add: {
@@ -86,26 +99,17 @@ export const reducer = (state, action) => {
                     ...newState.dates,
                     byId: {
                         ...newState.dates.byId,
-                        [newDatapoint.date]: [
+                        [newDatapoint.date]: [...new Set([
                             ... (newState.dates.byId[newDatapoint.date] || []),
                             newDatapoint.id
-                        ]
+                        ])]
                     },
                     allIds: [...new Set([...newState.dates.allIds, newDatapoint.date])]
                 }
             };
         }
         case actionTypes.reset: {
-            return {
-                datapoints: {
-                    byId: {},
-                    allIds: []
-                },
-                dates: {
-                    byId: {},
-                    allIds: []
-                }
-            };
+            return init(action.payload);
         }
         default: {
             throw new Error("Unhandled type: " + action.type);

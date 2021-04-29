@@ -1,94 +1,36 @@
-import React, { useReducer } from "react"
+import React, { useEffect, useReducer } from "react"
 import Modal from "./UI/Modal/Modal";
 import { ModalProvider } from "./UI/Modal/ModalContext";
 
 import Home from "./Home";
 import { WindowProvider } from "./UI/Window/WindowContext";
 
-import { actionTypes, reducer } from "./Datapoints";
+import { actionTypes, init, reducer } from "./reducers/reducer";
+import { useActions } from "./actions/App";
 
 const App = () => {
-    // const storageString = "indie.johnbrynte.harjagpollenallergi";
+    const storageString = "indie.johnbrynte.harjagpollenallergi";
 
-    const [data, dispatch] = useReducer(reducer, {
-        datapoints: {
-            byId: {},
-            allIds: []
-        },
-        dates: {
-            byId: {},
-            allIds: []
-        }
-    });
+    const [data, dispatch] = useReducer(reducer, null, init);
 
-    // useEffect(() => {
-    //     try {
-    //         const data = JSON.parse(window.localStorage.getItem(storageString));
+    const { callbackHandler } = useActions(dispatch);
 
-    //         if (data) {
-    //             setDatapoints(data);
-    //         }
-    //     } catch (e) { }
-    // }, []);
+    useEffect(() => {
+        try {
+            const data = JSON.parse(window.localStorage.getItem(storageString));
 
-    // useEffect(() => {
-    //     window.localStorage.setItem(storageString, JSON.stringify(data));
-    // }, [data]);
-
-    const addDatapoint = async (health) => {
-        const response = await fetch("https://www.johnbrynte.se/api/pollen/stockholm/");
-
-        if (!response.ok) {
-            console.error(response);
-            return;
-        }
-
-        const data = await response.json();
-
-        if (!data.success) {
-            console.error(data.error);
-            return;
-        }
-
-        const stats = data.data;
-        const id = Date.now();
-        const date = stats.date.split(" ")[0];
-
-        dispatch({
-            type: actionTypes.add,
-            payload: {
-                id,
-                date,
-                health,
-                stats
+            if (data) {
+                dispatch({
+                    type: actionTypes.reset,
+                    payload: data
+                });
             }
-        });
-    };
+        } catch (e) { }
+    }, []);
 
-    const updateDatapoint = (id, data) => {
-        dispatch({
-            type: actionTypes.update,
-            payload: {
-                id,
-                data
-            }
-        });
-    };
-
-    const removeDatapoint = (id) => {
-        dispatch({
-            type: actionTypes.remove,
-            payload: {
-                id: id
-            }
-        });
-    };
-
-    const removeAllDatapoints = () => {
-        dispatch({
-            type: actionTypes.reset
-        });
-    };
+    useEffect(() => {
+        window.localStorage.setItem(storageString, JSON.stringify(data));
+    }, [data]);
 
     // get all datapoints sorted by date
     const datapointsByDate = data.dates.allIds.sort().map((dateId) => (
@@ -97,13 +39,14 @@ const App = () => {
         ))
     ));
 
+    // unpack to one list
     const datapoints = datapointsByDate.length > 1 ? datapointsByDate.reduce((prev, cur) => prev.concat(cur)) : datapointsByDate[0];
 
     return (
         <>
             <WindowProvider>
                 <ModalProvider>
-                    <Home datapoints={datapoints} addDatapoint={addDatapoint} updateDatapoint={updateDatapoint} removeDatapoint={removeDatapoint} removeAllDatapoints={removeAllDatapoints}></Home>
+                    <Home datapoints={datapoints} callbackHandler={callbackHandler}></Home>
 
                     <Modal />
                 </ModalProvider>
