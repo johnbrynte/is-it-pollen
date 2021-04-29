@@ -3,7 +3,7 @@ import { dataNames, getSensitiveStats } from "./statistics";
 const OverviewVerdict = ({ stats }) => {
     const sensitive = getSensitiveStats(stats);
 
-    if (!sensitive) {
+    if (!sensitive || !sensitive.length) {
         return (<span>Du verkar inte vara känslig mot något speciellt.</span>);
     }
 

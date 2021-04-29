@@ -61,10 +61,10 @@ const Overview = ({ datapoints, updateDatapoint, removeDatapoint }) => {
                             </WindowContext.Consumer>
                         )}
                         <div className={styles.datapoints}>
-                            {datapoints.map((data, i) => (
-                                <DataPoint data={data} key={i}
-                                    update={(newData) => updateDatapoint(i, newData)}
-                                    remove={() => removeDatapoint(i)} />
+                            {datapoints.map((data) => (
+                                <DataPoint data={data} key={data.id}
+                                    update={(newData) => updateDatapoint(data.id, newData)}
+                                    remove={() => removeDatapoint(data.id)} />
                             ))}
                         </div>
                     </>
