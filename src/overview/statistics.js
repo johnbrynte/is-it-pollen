@@ -27,7 +27,13 @@ const calculateData = (d) => {
     const value = Object.values(d.health).reduce((prev, cur) => prev + cur);
 
     d.stats.pollen.forEach((e) => {
-        _d[e.id] = value * e.value / e.valueMax;
+        if (value === 0) {
+            // remove "probability" of pollen
+            _d[e.id] = - e.value / e.valueMax;
+        } else {
+            // add "probability" of pollen
+            _d[e.id] = value * e.value / e.valueMax;
+        }
     });
 
     return _d;
@@ -40,7 +46,7 @@ export const getStats = (datapoints) => {
 
     const calculatedDatapoints = datapoints.map(calculateData);
 
-    return calculatedDatapoints.reduce((prev, data) => {
+    const stats = calculatedDatapoints.reduce((prev, data) => {
         for (var key in data) {
             if (isNaN(prev[key])) {
                 prev[key] = 0;
@@ -49,6 +55,15 @@ export const getStats = (datapoints) => {
         }
         return prev;
     });
+
+    let statsNormalized = { ...stats };
+    for (var key in statsNormalized) {
+        if (statsNormalized[key] < 0) {
+            statsNormalized[key] = 0;
+        }
+    }
+
+    return statsNormalized;
 }
 
 export const getAverage = (stats) => {
