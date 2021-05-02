@@ -8,10 +8,23 @@ const ModalContext = React.createContext({
 
 export const ModalProvider = ({ children }) => {
     const [modal, setModal] = useState(null);
+
+    const show = (m) => {
+        document.body.className = "no-scroll";
+
+        setModal(m);
+    }
+
+    const hide = () => {
+        document.body.className = "";
+
+        setModal(null);
+    }
+
     const modalValue = {
         modal,
-        show: setModal,
-        hide: () => setModal(null),
+        show,
+        hide,
     };
 
     return (

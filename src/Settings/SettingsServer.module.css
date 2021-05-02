@@ -5,6 +5,7 @@
 
 .input {
     margin-right: 8px;
+    min-width: 0;
 }
 
 .consent {

@@ -9,9 +9,11 @@ const Modal = () => {
     return (modal && (
         <div className={styles.container}
             onClick={hide}>
-            <div className={styles.modal}
-                onClick={(e) => e.stopPropagation()}>
-                {modal}
+            <div className={styles.modalWrapper}>
+                <div className={styles.modal}
+                    onClick={(e) => e.stopPropagation()}>
+                    {modal}
+                </div>
             </div>
         </div>
     ));

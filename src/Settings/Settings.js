@@ -4,6 +4,7 @@ import Button from "../UI/Button";
 import LinkButton from "../UI/LinkButton";
 import ModalContext from "../UI/Modal/ModalContext";
 import ModalFooter from "../UI/Modal/ModalFooter";
+import ModalBody from "../UI/Modal/ModalBody";
 
 const VIEW_CALLBACKS_ENUMS = {
     ...CALLBACK_ENUMS
@@ -16,7 +17,9 @@ const Settings = ({ currentData, callbackHandler }) => {
     const manageServerData = () => {
         modalContext.show((
             <>
-                <SettingsServer currentData={currentData} callbackHandler={callbackHandler}></SettingsServer>
+                <ModalBody>
+                    <SettingsServer currentData={currentData} callbackHandler={callbackHandler}></SettingsServer>
+                </ModalBody>
                 <ModalFooter>
                     <Button compact click={modalContext.hide}>Stäng</Button>
                 </ModalFooter>
