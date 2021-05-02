@@ -1,10 +1,11 @@
-import React, { useEffect, useReducer } from "react"
+import React, { useEffect, useReducer, useState } from "react"
 import Modal from "./UI/Modal/Modal";
 import { ModalProvider } from "./UI/Modal/ModalContext";
 
 import Home from "./Home";
 import { WindowProvider } from "./UI/Window/WindowContext";
 
+import { getServerData, saveServerData } from "./server";
 import { actionTypes, init, reducer } from "./reducers/reducer";
 import { useActions } from "./actions/App";
 
@@ -15,21 +16,31 @@ const App = () => {
 
     const { callbackHandler } = useActions(dispatch);
 
-    useEffect(() => {
-        try {
-            const data = JSON.parse(window.localStorage.getItem(storageString));
-
-            if (data) {
-                dispatch({
-                    type: actionTypes.reset,
-                    payload: data
-                });
-            }
-        } catch (e) { }
-    }, []);
+    const [hasFetched, setHasFetched] = useState(false);
 
     useEffect(() => {
-        window.localStorage.setItem(storageString, JSON.stringify(data));
+        getServerData().then(function(serverData) {
+            try {
+                const saveData = serverData ? JSON.parse(serverData.data) : JSON.parse(window.localStorage.getItem(storageString));
+
+                if (saveData) {
+                    dispatch({
+                        type: actionTypes.reset,
+                        payload: saveData
+                    });
+                }
+            } catch (e) { }
+
+            setHasFetched(true);
+        });
+    }, [hasFetched]);
+
+    useEffect(() => {
+        if (hasFetched) {
+            window.localStorage.setItem(storageString, JSON.stringify(data));
+
+            saveServerData(data);
+        }
     }, [data]);
 
     // get all datapoints sorted by date
@@ -46,7 +57,7 @@ const App = () => {
         <>
             <WindowProvider>
                 <ModalProvider>
-                    <Home datapoints={datapoints} callbackHandler={callbackHandler}></Home>
+                    <Home datapoints={datapoints} currentData={data} callbackHandler={callbackHandler}></Home>
 
                     <Modal />
                 </ModalProvider>

@@ -6,6 +6,16 @@ export const actionTypes = {
 };
 
 export const init = (data) => {
+    if (data) {
+        // validate
+        if (
+            !data.datapoints || !(data.datapoints.byId instanceof Object) || !(data.datapoints.allIds instanceof Array)
+            || !data.dates || !(data.dates.byId instanceof Object) || !(data.dates.allIds instanceof Array)
+        ) {
+            console.log("invalid", data)
+            data = null;
+        }
+    }
     return data || {
         datapoints: {
             byId: {},

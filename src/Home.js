@@ -1,29 +1,23 @@
-import Overview, { CALLBACK_ENUMS } from "./overview/Overview";
+import Overview, { CALLBACK_ENUMS as OVERVIEW_CALLBACK_ENUMS } from "./overview/Overview";
 import DailySelector from "./selector/DailySelector";
-import Settings from "./Settings";
+import Settings, { CALLBACK_ENUMS as SETTINGS_CALLBACK_ENUMS } from "./Settings/Settings";
 import CookieConsent from "./CookieConsent";
 
 import styles from "./Home.module.css";
 
 const VIEW_CALLBACKS_ENUMS = {
-    ...CALLBACK_ENUMS,
+    ...OVERVIEW_CALLBACK_ENUMS,
+    ...SETTINGS_CALLBACK_ENUMS,
     HOME_ADD_DATAPOINT: "Home/addDatapoint",
-    HOME_REMOVE_ALL_DATAPOINTS: "Home/removeAllDatapoints"
 }
 
-const Home = ({ datapoints, callbackHandler }) => {
+const Home = ({ datapoints, currentData, callbackHandler }) => {
 
     const addDatapoint = (health) => {
         callbackHandler(
             VIEW_CALLBACKS_ENUMS.HOME_ADD_DATAPOINT,
             { health }
         );
-    }
-
-    const removeAllDatapoints = () => {
-        callbackHandler(
-            VIEW_CALLBACKS_ENUMS.HOME_REMOVE_ALL_DATAPOINTS
-        )
     }
 
     return (
@@ -43,7 +37,7 @@ const Home = ({ datapoints, callbackHandler }) => {
             <div className={styles.footer}>
                 <p>Alla ikoner kommer från <a href="https://streamlineicons.com/" rel="noreferrer" target="_blank">Streamline</a>.</p>
                 <p>Se koden på <a href="https://github.com/johnbrynte/is-it-pollen" rel="noreferrer" target="_blank">GitHub</a>.</p>
-                <Settings removeAllDatapoints={removeAllDatapoints} />
+                <Settings currentData={currentData} callbackHandler={callbackHandler} />
             </div>
         </>
     );

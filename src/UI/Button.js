@@ -3,7 +3,7 @@ import { className } from "../helpers";
 
 import styles from "./Button.module.css";
 
-const Button = ({ children, click, compact }) => {
+const Button = ({ children, click, compact, disabled }) => {
     const buttonClass = className([
         styles.button,
         {
@@ -12,7 +12,7 @@ const Button = ({ children, click, compact }) => {
     ]);
 
     return (
-        <button className={buttonClass} onClick={click}>{children}</button>
+        <button className={buttonClass} onClick={click} disabled={disabled}>{children}</button>
     );
 };
 

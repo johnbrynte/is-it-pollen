@@ -53,9 +53,16 @@ export const useActions = (dispatch) => {
                     payload: data
                 });
                 break;
-            case CALLBACK_ENUMS.HOME_REMOVE_ALL_DATAPOINTS:
+            case CALLBACK_ENUMS.SETTINGS_SERVER_REMOVE_ALL_DATAPOINTS:
                 dispatch({
                     type: actionTypes.reset,
+                });
+                break;
+            case CALLBACK_ENUMS.SETTINGS_SERVER_NONE_SET_DATAPOINTS:
+            case CALLBACK_ENUMS.SETTINGS_SERVER_CREATED_SET_DATAPOINTS:
+                dispatch({
+                    type: actionTypes.reset,
+                    payload: data
                 });
                 break;
             default:
