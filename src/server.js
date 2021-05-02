@@ -25,8 +25,14 @@ export const createServerData = async (data) => {
     return responseData.data.token;
 }
 
-export const saveServerData = async (token, data) => {
+export const saveServerData = async (data) => {
     if (!data) {
+        return;
+    }
+
+    const token = getServerToken();
+
+    if (!token) {
         return;
     }
 

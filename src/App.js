@@ -17,6 +17,7 @@ const App = () => {
     const { callbackHandler } = useActions(dispatch);
 
     const [hasFetched, setHasFetched] = useState(false);
+    const [hasInitialized, setHasInitialized] = useState(false);
 
     useEffect(() => {
         getServerData().then(function(serverData) {
@@ -39,7 +40,11 @@ const App = () => {
         if (hasFetched) {
             window.localStorage.setItem(storageString, JSON.stringify(data));
 
-            saveServerData(data);
+            if (hasInitialized) {
+                saveServerData(data);
+            } else {
+                setHasInitialized(true);
+            }
         }
     }, [data]);
 
